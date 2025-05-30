@@ -1,0 +1,175 @@
+<html>
+<head>
+  <title>To Do List</title>
+  <style>
+    p {
+      color: black;
+      font-family: Arial, sans-serif;
+    text-align: center
+    }
+    .post {
+      background-color: #f2f2f2;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-width: 90%;
+      box-sizing: border-box;
+    }
+    textarea {
+      width: 100%;
+      height: 60px;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      border: 3px solid #ccc;
+      border-radius: 10px;
+      resize: vertical;
+      display: block;
+      margin-bottom: 0px;
+text-align: center;
+       }
+
+    button {
+      border-radius: 10000px;
+      width: 10%;
+    
+    }
+body {
+background: #99ccff;
+display: flex
+ Justify-content: center;
+align-items: center;
+height: 500vh;
+margin: 10px;
+text-align: center;
+}
+
+.borded-title {
+border: 5px solid black;
+padding: 15px;
+display: inline-block;
+margin: 5px auto; 
+text-align: center;
+border-radius: 100000px;
+}
+
+.footer{
+border: 5px solid black;
+padding 10px;
+height: 3000px;
+background: white;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <h1  class="borded-title">To Doo List</h1>
+<div>
+  <p>Post and keep track of your to-do list with whatever you need done</p>
+</div>
+
+  <textarea id="postInput" placeholder="Write your to-do list here"></textarea>
+
+  <button onclick="addPost()">Post to do list</button>
+
+  <button onclick="savePost()">Save</button>
+
+  <button onclick="loadPost()">Load</button>
+
+<div>
+<button onclick="clearSavedPost()">Clear Saved List</button>
+</div>
+<div>
+  <ul id="postContainer"></ul>
+</div>
+
+  <footer class="footer">
+<div>
+<p>Keep up the good work</p>
+</div>
+    <div>
+    <p>Coded by R.D.</p>
+</div>
+  </footer>
+
+</body>
+
+<script>
+  function reconnectCheckButtons() {
+    const container = document.getElementById('postContainer');
+    const buttons = container.querySelectorAll('button');
+
+    buttons.forEach(button => {
+      if (button.textContent === '✔') {
+        button.onclick = function () {
+          button.style.backgroundColor = 'lightgreen';
+        };
+      }
+    });
+  }
+
+  function addPost() {
+    const input = document.getElementById('postInput');
+    const postText = input.value.trim();
+
+    if (postText === '') {
+      alert('!_Write your to do list before posting_!');
+      return;
+    }
+
+    const postsContainer = document.getElementById('postContainer');
+    const newPost = document.createElement('li');
+    const button = document.createElement('button');
+    button.textContent = '✔';
+    button.style.marginRight = '10px';
+
+    button.onclick = function () {
+      button.style.backgroundColor = 'lightgreen';
+    };
+
+    newPost.appendChild(button);
+    newPost.appendChild(document.createTextNode(postText));
+    newPost.className = 'post';
+
+    postsContainer.prepend(newPost);
+    input.value = '';
+  }
+
+  function savePost() {
+    const postsHTML = document.getElementById('postContainer').innerHTML;
+    localStorage.setItem('savedPost', postsHTML);
+    alert('!_Saved_!');
+  }
+
+  function loadPost() {
+    const saved = localStorage.getItem('savedPost');
+    if (saved !== null) {
+      document.getElementById('postContainer').innerHTML = saved;
+      reconnectCheckButtons();
+      alert('!_Loaded_!');
+    } else {
+      alert('!_No saved post found_!');
+    }
+  }
+
+  window.onload = function () {
+    const saved = localStorage.getItem('savedPost');
+    if (saved !== null) {
+      document.getElementById('postContainer').innerHTML = saved;
+      reconnectCheckButtons();
+    }
+  }
+
+function clearSavedPost() {
+localStorage.removeItem('savedPost');
+document.getElementById('postContainer').innerHTML = ' ';
+alert('!_SAVED POSTS CLEARED_!');
+}
+
+</script>
+
+</html>
